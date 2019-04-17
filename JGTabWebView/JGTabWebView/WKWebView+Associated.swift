@@ -17,6 +17,8 @@ public extension WKWebView {
         static var title = "WKWebView.AssociatedKeys.title"
         static var jgNavigationDelegate = "WKWebView.AssociatedKeys.jgNavigationDelegate"
         static var navigationDelegateProxy = "WKWebView.AssociatedKeys.navigationDelegateProxy"
+        static var jgUiDelegate = "WKWebView.AssociatedKeys.jgUiDelegate"
+        static var uiDelegateProxy = "WKWebView.AssociatedKeys.uiDelegateProxy"
     }
     
     /// WebView 고유 ID
@@ -46,4 +48,15 @@ public extension WKWebView {
         get { return objc_getAssociatedObject(self, &AssociatedKeys.navigationDelegateProxy) as AnyObject }
         set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.navigationDelegateProxy, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
+    
+    @objc var jgUiDelegate: WKUIDelegate? {
+        get { return objc_getAssociatedObject(self, &AssociatedKeys.jgUiDelegate) as? WKUIDelegate }
+        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.jgUiDelegate, manager, .OBJC_ASSOCIATION_ASSIGN) }
+    }
+    
+    var uiDelegateProxy: AnyObject? {
+        get { return objc_getAssociatedObject(self, &AssociatedKeys.uiDelegateProxy) as AnyObject }
+        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.uiDelegateProxy, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+
 }

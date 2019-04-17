@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 import JGTabWebView
 
-class ViewController: UIViewController, WKNavigationDelegate {
+class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +18,9 @@ class ViewController: UIViewController, WKNavigationDelegate {
         let webView = JGTabWebView().newTabWebView()
         webView.frame = view.bounds
         webView.jgNavigationDelegate = self
+        webView.jgUiDelegate = self
         webView.load(URLRequest(url: URL(string: "http://m.zum.com")!))
         view.addSubview(webView)
-    }
+    }    
 }
 

@@ -8,8 +8,9 @@
 
 import UIKit
 import WebKit
+
 public extension WKWebView {
-    static let swizzle: Void = {
+    static let swizzle_nvigationDelegate: Void = {
         swizzle_jgNavigationDelegate
     }()
     

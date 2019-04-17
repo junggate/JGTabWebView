@@ -18,6 +18,8 @@
 		8BD749812265C85D008B5A68 /* WKWebView+WKNavigationDelegate.swift in Headers */ = {isa = PBXBuildFile; fileRef = 8BD7497D2265B277008B5A68 /* WKWebView+WKNavigationDelegate.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BD749822265C85F008B5A68 /* NSObject+Swizzle.swift in Headers */ = {isa = PBXBuildFile; fileRef = 8BD7497F2265B3BE008B5A68 /* NSObject+Swizzle.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BD749842266ACA8008B5A68 /* WKNavigationDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD749832266ACA8008B5A68 /* WKNavigationDelegateProxy.swift */; };
+		8BD74A0B2266C2DE008B5A68 /* WKWebView+WKUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD74A0A2266C2DE008B5A68 /* WKWebView+WKUIDelegate.swift */; };
+		8BD74A0D2266C2E7008B5A68 /* WKUIDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD74A0C2266C2E7008B5A68 /* WKUIDelegateProxy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 		8BD7497D2265B277008B5A68 /* WKWebView+WKNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+WKNavigationDelegate.swift"; sourceTree = "<group>"; };
 		8BD7497F2265B3BE008B5A68 /* NSObject+Swizzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Swizzle.swift"; sourceTree = "<group>"; };
 		8BD749832266ACA8008B5A68 /* WKNavigationDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationDelegateProxy.swift; sourceTree = "<group>"; };
+		8BD74A0A2266C2DE008B5A68 /* WKWebView+WKUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+WKUIDelegate.swift"; sourceTree = "<group>"; };
+		8BD74A0C2266C2E7008B5A68 /* WKUIDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKUIDelegateProxy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +91,9 @@
 				8BD749642265A83F008B5A68 /* JGTabWebView.swift */,
 				8BD749672265AA15008B5A68 /* WKWebView+Associated.swift */,
 				8BD7497D2265B277008B5A68 /* WKWebView+WKNavigationDelegate.swift */,
+				8BD74A0A2266C2DE008B5A68 /* WKWebView+WKUIDelegate.swift */,
 				8BD749832266ACA8008B5A68 /* WKNavigationDelegateProxy.swift */,
+				8BD74A0C2266C2E7008B5A68 /* WKUIDelegateProxy.swift */,
 				8BD7497F2265B3BE008B5A68 /* NSObject+Swizzle.swift */,
 			);
 			path = JGTabWebView;
@@ -218,6 +224,8 @@
 				8BD749652265A83F008B5A68 /* JGTabWebView.swift in Sources */,
 				8BD7497E2265B277008B5A68 /* WKWebView+WKNavigationDelegate.swift in Sources */,
 				8BD749842266ACA8008B5A68 /* WKNavigationDelegateProxy.swift in Sources */,
+				8BD74A0B2266C2DE008B5A68 /* WKWebView+WKUIDelegate.swift in Sources */,
+				8BD74A0D2266C2E7008B5A68 /* WKUIDelegateProxy.swift in Sources */,
 				8BD749682265AA15008B5A68 /* WKWebView+Associated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,7 +11,8 @@ import WebKit
 
 open class JGTabWebView: NSObject {
     public override init() {
-        WKWebView.swizzle
+        WKWebView.swizzle_uiDelegate
+        WKWebView.swizzle_nvigationDelegate
     }
     
     open func newTabWebView() -> WKWebView {

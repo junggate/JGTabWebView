@@ -7,14 +7,19 @@
 //
 
 import UIKit
+import WebKit
+import JGTabWebView
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, WKNavigationDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        let webView = JGTabWebView().newTabWebView()
+        webView.frame = view.bounds
+        webView.jgNavigationDelegate = self
+        webView.load(URLRequest(url: URL(string: "http://m.zum.com")!))
+        view.addSubview(webView)
     }
-
-
 }
 

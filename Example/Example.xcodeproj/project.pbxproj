@@ -14,6 +14,8 @@
 		8BD749DA2266BFC9008B5A68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BD749D82266BFC9008B5A68 /* LaunchScreen.storyboard */; };
 		8BD749E52266BFC9008B5A68 /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD749E42266BFC9008B5A68 /* ExampleTests.swift */; };
 		8BD749F02266BFC9008B5A68 /* ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BD749EF2266BFC9008B5A68 /* ExampleUITests.swift */; };
+		8BD74A072266C0ED008B5A68 /* JGTabWebView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD74A062266C0ED008B5A68 /* JGTabWebView.framework */; };
+		8BD74A082266C0ED008B5A68 /* JGTabWebView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BD74A062266C0ED008B5A68 /* JGTabWebView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +35,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8BD74A092266C0ED008B5A68 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8BD74A082266C0ED008B5A68 /* JGTabWebView.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		8BD749CC2266BFC8008B5A68 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BD749CF2266BFC8008B5A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +63,7 @@
 		8BD749EB2266BFC9008B5A68 /* ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BD749EF2266BFC9008B5A68 /* ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUITests.swift; sourceTree = "<group>"; };
 		8BD749F12266BFC9008B5A68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BD74A062266C0ED008B5A68 /* JGTabWebView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JGTabWebView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BD74A072266C0ED008B5A68 /* JGTabWebView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +99,7 @@
 				8BD749E32266BFC9008B5A68 /* ExampleTests */,
 				8BD749EE2266BFC9008B5A68 /* ExampleUITests */,
 				8BD749CD2266BFC8008B5A68 /* Products */,
+				8BD74A062266C0ED008B5A68 /* JGTabWebView.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,6 +154,7 @@
 				8BD749C82266BFC8008B5A68 /* Sources */,
 				8BD749C92266BFC8008B5A68 /* Frameworks */,
 				8BD749CA2266BFC8008B5A68 /* Resources */,
+				8BD74A092266C0ED008B5A68 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -435,6 +455,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WW257K3D68;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -453,6 +474,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WW257K3D68;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -17,10 +17,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 
         let webView = JGTabWebView().newTabWebView()
         webView.frame = view.bounds
-        webView.jgNavigationDelegate = self
-        webView.jgUiDelegate = self
         webView.load(URLRequest(url: URL(string: "http://m.zum.com")!))
         view.addSubview(webView)
-    }    
+    }
 }
 

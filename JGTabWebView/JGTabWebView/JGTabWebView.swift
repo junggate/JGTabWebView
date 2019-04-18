@@ -11,12 +11,14 @@ import WebKit
 
 open class JGTabWebView: NSObject {
     public override init() {
-        WKWebView.swizzle_uiDelegate
-        WKWebView.swizzle_nvigationDelegate
     }
+ 
+    open var openedPopup: ((JGWebView)->())?
+    private var webViews: [JGWebView] = []
     
-    open func newTabWebView() -> WKWebView {
-        let webView = WKWebView(frame: CGRect.zero, configuration: WKWebViewConfiguration())
+    open func newTabWebView(_ configuration: WKWebViewConfiguration = WKWebViewConfiguration()) -> JGWebView {
+        let webView = JGWebView(frame: CGRect.zero, configuration: configuration)
+        webViews.append(webView)
         return webView
     }
 }

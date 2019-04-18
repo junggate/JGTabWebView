@@ -21,42 +21,45 @@ public extension WKWebView {
         static var uiDelegateProxy = "WKWebView.AssociatedKeys.uiDelegateProxy"
     }
     
-    /// WebView 고유 ID
-    var `id`: String? {
-        get { return objc_getAssociatedObject(self, &AssociatedKeys.id) as? String }
-        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.id, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-    }
-    
-    /// Parent WebView의 ID
-    var parentId: String? {
-        get { return objc_getAssociatedObject(self, &AssociatedKeys.parentId) as? String }
-        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.parentId, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-    }
-    
-    /// 현재 페이지 제목
-    var title: String? {
-        get { return objc_getAssociatedObject(self, &AssociatedKeys.title) as? String }
-        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.title, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-    }
-    
-    @objc var jgNavigationDelegate: WKNavigationDelegate? {
-        get { return objc_getAssociatedObject(self, &AssociatedKeys.jgNavigationDelegate) as? WKNavigationDelegate }
-        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.jgNavigationDelegate, manager, .OBJC_ASSOCIATION_ASSIGN) }
-    }
-    
-    var navigationDelegateProxy: AnyObject? {
-        get { return objc_getAssociatedObject(self, &AssociatedKeys.navigationDelegateProxy) as AnyObject }
-        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.navigationDelegateProxy, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-    }
-    
-    @objc var jgUiDelegate: WKUIDelegate? {
-        get { return objc_getAssociatedObject(self, &AssociatedKeys.jgUiDelegate) as? WKUIDelegate }
-        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.jgUiDelegate, manager, .OBJC_ASSOCIATION_ASSIGN) }
-    }
-    
-    var uiDelegateProxy: AnyObject? {
-        get { return objc_getAssociatedObject(self, &AssociatedKeys.uiDelegateProxy) as AnyObject }
-        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.uiDelegateProxy, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
-    }
+//    /// WebView 고유 ID
+//    var `id`: String? {
+//        get { return objc_getAssociatedObject(self, &AssociatedKeys.id) as? String }
+//        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.id, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+//    }
+//    
+//    /// Parent WebView의 ID
+//    var parentId: String? {
+//        get { return objc_getAssociatedObject(self, &AssociatedKeys.parentId) as? String }
+//        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.parentId, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+//    }
+//    
+//    /// 현재 페이지 제목
+//    var title: String? {
+//        get { return objc_getAssociatedObject(self, &AssociatedKeys.title) as? String }
+//        set (manager) {
+//            print("webView.title \(manager ?? "")")
+//            objc_setAssociatedObject(self, &AssociatedKeys.title, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+//        }
+//    }
+//    
+//    @objc var jgNavigationDelegate: WKNavigationDelegate? {
+//        get { return objc_getAssociatedObject(self, &AssociatedKeys.jgNavigationDelegate) as? WKNavigationDelegate }
+//        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.jgNavigationDelegate, manager, .OBJC_ASSOCIATION_ASSIGN) }
+//    }
+//    
+//    var navigationDelegateProxy: AnyObject? {
+//        get { return objc_getAssociatedObject(self, &AssociatedKeys.navigationDelegateProxy) as AnyObject }
+//        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.navigationDelegateProxy, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+//    }
+//    
+//    @objc var jgUiDelegate: WKUIDelegate? {
+//        get { return objc_getAssociatedObject(self, &AssociatedKeys.jgUiDelegate) as? WKUIDelegate }
+//        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.jgUiDelegate, manager, .OBJC_ASSOCIATION_ASSIGN) }
+//    }
+//    
+//    var uiDelegateProxy: AnyObject? {
+//        get { return objc_getAssociatedObject(self, &AssociatedKeys.uiDelegateProxy) as AnyObject }
+//        set (manager) { objc_setAssociatedObject(self, &AssociatedKeys.uiDelegateProxy, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+//    }
 
 }

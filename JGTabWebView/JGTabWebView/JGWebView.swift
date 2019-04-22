@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate {
+open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate, UIGestureRecognizerDelegate {
     /// WebView 고유 ID
     open var `id`: String?
     
@@ -17,20 +17,42 @@ open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate {
     open var parentId: String?
     
     open override var uiDelegate: WKUIDelegate? {
-        set { originUIDelegate = uiDelegate; super.uiDelegate = self }
+        set { originUIDelegate = uiDelegate }
         get { return originUIDelegate }
     }
     
     open override var navigationDelegate: WKNavigationDelegate? {
-        set { originNavigationDelegate = navigationDelegate; super.navigationDelegate = self }
+        set { originNavigationDelegate = navigationDelegate }
         get { return originNavigationDelegate }
+    }
+    
+    open var openPopup: ((JGWebView)->Void)?
+    open var closePopup: ((JGWebView)->Void)?
+    open var longPressEvent: ((String?)->Void)?
+    
+    open override var title: String? {
+        return super.title?.isEmpty ?? true ? url?.absoluteString : super.title
     }
 
     private var originUIDelegate: WKUIDelegate?
     private var originNavigationDelegate: WKNavigationDelegate?
     
-    
     override init(frame: CGRect, configuration: WKWebViewConfiguration) {
+        let userContentController = WKUserContentController()
+        
+        // Diable Long Press Event
+        userContentController.addUserScript(WKUserScript(source: "document.body.style.webkitTouchCallout='none';",
+                                                         injectionTime: .atDocumentEnd,
+                                                         forMainFrameOnly: true))
+        
+        if let path = Bundle(for: type(of: self)).path(forResource: "JSTools", ofType: "js"),
+            let jsCode = try? String(contentsOfFile: path, encoding: .utf8) {
+            userContentController.addUserScript(WKUserScript(source: jsCode,
+                                                             injectionTime: .atDocumentEnd,
+                                                             forMainFrameOnly: true))
+        }
+
+        configuration.userContentController = userContentController
         super.init(frame: frame, configuration: configuration)
         initialize()
     }
@@ -39,11 +61,32 @@ open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     private func initialize() {
-        self.uiDelegate = self
-        self.navigationDelegate = self
+        super.navigationDelegate = self
+        super.uiDelegate = self
+        allowsLinkPreview = false
+        allowsBackForwardNavigationGestures = true
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(touchLongTap))
+        longPressGesture.delegate = self
+        addGestureRecognizer(longPressGesture)
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    @objc func touchLongTap(gesture : UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            let point = gesture.location(in: self)
+            let script = String(format: "getSourceAtPoint(%.0f, %.0f)", point.x, point.y-scrollView.adjustedContentInset.top)
+            evaluateJavaScript(script, completionHandler: { [weak self] (result, error) in
+                if let result = result as? String, !result.isEmpty {
+                    self?.longPressEvent?(result)
+                }
+            })
+        }
     }
 }
 
@@ -90,7 +133,6 @@ extension JGWebView {
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         originNavigationDelegate?.webView?(webView, didFinish: navigation)
-        getWebPageTitle(webView: webView)
     }
     
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -134,6 +176,7 @@ extension JGWebView {
             let jgWebView = JGWebView(frame: CGRect.zero, configuration: configuration)
             jgWebView.parentId = webView.id
             newWebView = jgWebView
+            openPopup?(jgWebView)
         }
         
         return newWebView
@@ -141,6 +184,9 @@ extension JGWebView {
     
     public func webViewDidClose(_ webView: WKWebView) {
         originUIDelegate?.webViewDidClose?(webView)
+        if let jgWebview = webView as? JGWebView {
+            closePopup?(jgWebview)
+        }
     }
     
     public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {

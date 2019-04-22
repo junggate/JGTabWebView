@@ -45,7 +45,6 @@ open class JGTabWebView: NSObject {
         }
         
         webView.longPressEvent = { [weak self] (jsonString) in
-            print("jsonString \(jsonString ?? "")")
             if let jsonData = (jsonString?.data(using: .utf8)) {
                 if let jsonObject = try? JSONSerialization.jsonObject(with: jsonData,
                                                                       options : .allowFragments) as? Dictionary<String, String> {

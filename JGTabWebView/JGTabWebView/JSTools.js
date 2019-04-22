@@ -4,11 +4,11 @@ function getSourceAtPoint(x,y) {
     var e = document.elementFromPoint(x,y);
     while (e) {
         if (e.src) {
-            image = 'image : "' + e.src + '"';
+            image = 'image:"' + e.src + '"';
         }
         
         if (e.href) {
-            link = '"link" : "' + e.href + '"';
+            link = '"link":"' + e.href + '"';
             break;
         }
 
@@ -19,16 +19,16 @@ function getSourceAtPoint(x,y) {
         return ""
     }
     
-    var json = "{ ";
+    var json = "{";
     if(link) {
         json += link;
     }
     if(image) {
         if (link) {
-            json += ', ';
+            json += ',';
         }
         json += image;
     }
-    json += ' }';
+    json += '}';
     return json;
 }

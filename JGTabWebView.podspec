@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
 
 s.name         = "JGTabWebView"
 s.version      = "1.0.0"
+s.swift_version = '5.0'
 s.summary      = "WKWebView의 기본 기능을 제공"
 
 # This description is used to generate tags and improve search results.
@@ -93,7 +94,7 @@ s.source       = { :git => "https://github.com/junggate/JGTabWebView.git", :tag 
 #  Not including the public_header_files will make all headers public.
 #
 
-s.source_files  = 'JGTabWebView/JGTabWebView/**/*'
+s.source_files  = 'JGTabWebView/JGTabWebView/**/*.{swift,js}'
 # s.exclude_files = "Classes/Exclude"
 
 # s.public_header_files = "Classes/**/*.h"

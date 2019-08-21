@@ -46,6 +46,7 @@
 		8BD74A0A2266C2DE008B5A68 /* WKWebView+WKUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+WKUIDelegate.swift"; sourceTree = "<group>"; };
 		8BD74A0E22672629008B5A68 /* JGWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JGWebView.swift; sourceTree = "<group>"; };
 		8BDD3655226D4E8600B44844 /* JSTools.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSTools.js; sourceTree = "<group>"; };
+		8BDD365E226E897B00B44844 /* JGTabWebView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JGTabWebView.podspec; path = ../JGTabWebView.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +71,7 @@
 		8BD748FA2265A3BC008B5A68 = {
 			isa = PBXGroup;
 			children = (
+				8BDD365E226E897B00B44844 /* JGTabWebView.podspec */,
 				8BD749062265A3BC008B5A68 /* JGTabWebView */,
 				8BD749112265A3BC008B5A68 /* JGTabWebViewTests */,
 				8BD749052265A3BC008B5A68 /* Products */,

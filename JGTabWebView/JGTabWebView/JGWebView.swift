@@ -9,26 +9,31 @@
 import UIKit
 import WebKit
 
-open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate, UIGestureRecognizerDelegate {
+open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate, UIGestureRecognizerDelegate, WKScriptMessageHandler {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+
+    }
+
     /// WebView 고유 ID
-    open var `id`: String?
+    open var `id` = UUID().uuidString
     
     /// Parent WebView의 ID
     open var parentId: String?
     
     open override var uiDelegate: WKUIDelegate? {
-        set { originUIDelegate = uiDelegate }
+        set { originUIDelegate = newValue }
         get { return originUIDelegate }
     }
     
     open override var navigationDelegate: WKNavigationDelegate? {
-        set { originNavigationDelegate = navigationDelegate }
+        set { originNavigationDelegate = newValue }
         get { return originNavigationDelegate }
     }
     
-    open var openPopup: ((JGWebView)->Void)?
+    open var openPopup: ((URL, JGWebView)->Void)?
     open var closePopup: ((JGWebView)->Void)?
-    open var longPressEvent: ((String?)->Void)?
+    open var longPressEvent: ((CGPoint, String?)->Void)?
+    
     
     open override var title: String? {
         return super.title?.isEmpty ?? true ? url?.absoluteString : super.title
@@ -36,10 +41,11 @@ open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate, UIGestureRe
 
     private var originUIDelegate: WKUIDelegate?
     private var originNavigationDelegate: WKNavigationDelegate?
+    private var previewImagePath: String?
     
-    override init(frame: CGRect, configuration: WKWebViewConfiguration) {
+    override public init(frame: CGRect, configuration: WKWebViewConfiguration) {
         let userContentController = WKUserContentController()
-        
+
         // Diable Long Press Event
         userContentController.addUserScript(WKUserScript(source: "document.body.style.webkitTouchCallout='none';",
                                                          injectionTime: .atDocumentEnd,
@@ -53,6 +59,10 @@ open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate, UIGestureRe
         }
 
         configuration.userContentController = userContentController
+        configuration.applicationNameForUserAgent = JGWebView.cusotmUserAgent
+        configuration.allowsInlineMediaPlayback = true
+        configuration.mediaTypesRequiringUserActionForPlayback = []
+
         super.init(frame: frame, configuration: configuration)
         initialize()
     }
@@ -71,7 +81,28 @@ open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate, UIGestureRe
         longPressGesture.delegate = self
         addGestureRecognizer(longPressGesture)
     }
-    
+    static public var cusotmUserAgent = ""
+    static public func addUserAgentString(string: String) {
+        let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+
+        var status = true
+        var runJavascript = false
+        while status {
+            if runJavascript == false {
+                webView.evaluateJavaScript("navigator.userAgent") { (userAgent, error) in
+                    _ = webView // 메모리 해제 방어용
+                    JGWebView.cusotmUserAgent = "\(userAgent as? String ?? "") \(string)"
+                    print("addUserAgentString: \(JGWebView.cusotmUserAgent)")
+                    status = false
+                }
+                runJavascript = true
+            }
+
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        }
+    }
+
+    // MARK:- Gesture
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
@@ -83,10 +114,33 @@ open class JGWebView: WKWebView, WKNavigationDelegate, WKUIDelegate, UIGestureRe
             let script = String(format: "getSourceAtPoint(%.0f, %.0f)", point.x, point.y-scrollView.adjustedContentInset.top)
             evaluateJavaScript(script, completionHandler: { [weak self] (result, error) in
                 if let result = result as? String, !result.isEmpty {
-                    self?.longPressEvent?(result)
+                    self?.longPressEvent?(point, result)
                 }
             })
         }
+    }
+    
+    // MARK:- Public
+    open func savePreviewImageToTemporary(width: CGFloat, result: @escaping ((URL) -> ())) {
+        let configuration = WKSnapshotConfiguration()
+        var rect = bounds
+        if scrollView.contentOffset.y < 0 { // 스크롤 상단 공백 제거
+            rect.origin.y = -scrollView.contentOffset.y
+        }
+        configuration.rect = rect
+        configuration.snapshotWidth = NSNumber(value: Float(width))
+        takeSnapshot(with: configuration, completionHandler: { [weak self] (image, error) in
+            guard let `self` = self else { return }
+            if let data = image?.pngData() {
+                let fileName = "\(self.id).png"
+                let path = "\(NSTemporaryDirectory())\(fileName)"
+                let url = URL(fileURLWithPath: path)
+                try? FileManager.default.removeItem(at: url)
+                try? data.write(to: url)
+                self.previewImagePath = path
+                result(url)
+            }
+        })
     }
 }
 
@@ -117,6 +171,7 @@ extension JGWebView {
     
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         originNavigationDelegate?.webView?(webView, didStartProvisionalNavigation: navigation)
+//        getPreviewImage()
     }
     
     public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
@@ -154,34 +209,29 @@ extension JGWebView {
     }
     
     // MARK: - Private
-    private func getWebPageTitle(webView: WKWebView) {
-        //        webView.evaluateJavaScript("document.title") { (result, error) in
-        //            webView.title = result as? String
-        //        }
-    }
 }
 
 
 // MARK: - WKUIDelegate
 extension JGWebView {
-    public func webView(_ webView: JGWebView,
+    public func webView(_ webView: WKWebView,
                  createWebViewWith configuration: WKWebViewConfiguration,
                  for navigationAction: WKNavigationAction,
                  windowFeatures: WKWindowFeatures) -> WKWebView? {
         var newWebView = originUIDelegate?.webView?(webView,
-                                           createWebViewWith: configuration,
-                                           for: navigationAction,
-                                           windowFeatures: windowFeatures)
-        if newWebView == nil {
+                                                    createWebViewWith: configuration,
+                                                    for: navigationAction,
+                                                    windowFeatures: windowFeatures)
+        if newWebView == nil, let url = navigationAction.request.url {
             let jgWebView = JGWebView(frame: CGRect.zero, configuration: configuration)
-            jgWebView.parentId = webView.id
+            jgWebView.parentId = (webView as? JGWebView)?.id
             newWebView = jgWebView
-            openPopup?(jgWebView)
+            openPopup?(url, jgWebView)
         }
         
         return newWebView
     }
-    
+
     public func webViewDidClose(_ webView: WKWebView) {
         originUIDelegate?.webViewDidClose?(webView)
         if let jgWebview = webView as? JGWebView {

@@ -19,6 +19,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         webView.frame = view.bounds
         webView.load(URLRequest(url: URL(string: "http://m.zum.com")!))
         view.addSubview(webView)
+        webView.uiDelegate = self
+        webView.navigationDelegate = self
     
 //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(3) + .milliseconds(0)) { [weak self] in
 //            let configuration = WKSnapshotConfiguration()
@@ -33,6 +35,10 @@ class ViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
 //                self?.view.addSubview(imageView)
 //            })
 //        }
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        decisionHandler(.allow)
     }
 }
 

@@ -11,13 +11,13 @@ import WebKit
 
 open class JGTabWebView: NSObject {
     public override init() {
+        super.init()
     }
  
-    open var openPopup: ((_ index: Int, _ webView: JGWebView)->Void)?
-    open var closePopup: ((_ index: Int, _ webView: JGWebView)->Void)?
-    open var longPressEvent: ((Dictionary<String, String>)->Void)?
-
-    private var webViews: [JGWebView] = []
+    open var openPopup: ((_ url: URL, _ webView: JGWebView)->Void)?
+    open var closePopup: ((JGWebView)->Void)?
+    open var longPressEvent: ((CGPoint, Dictionary<String, String>)->Void)?
+    open var webViews: [JGWebView] = []
     
     open func newTabWebView(_ configuration: WKWebViewConfiguration = WKWebViewConfiguration()) -> JGWebView {
         let webView = JGWebView(frame: CGRect.zero, configuration: configuration)
@@ -25,30 +25,49 @@ open class JGTabWebView: NSObject {
         setWebViewClosure(webView: webView)
         return webView
     }
+
+    open func getWebView(identifier: String) -> JGWebView? {
+        let result = webViews.filter { (webView) -> Bool in
+            return webView.id == identifier
+        }
+        return result.first
+    }
+
+    open func getParentWebView(childIdentifier: String) -> JGWebView? {
+        let parent = webViews.filter { (webView) -> Bool in
+            return webView.id == childIdentifier
+        }.first
+        if let parent = parent {
+            return getWebView(identifier: parent.id)
+        }
+        return nil
+    }
+
+    open func removeWebView(identifier: String) {
+        webViews.removeAll(where: { (webView) -> Bool in
+            return webView.id == identifier
+        })
+    }
     
     // MARK: - Private
     func setWebViewClosure(webView: JGWebView) {
-        webView.openPopup = { [weak self] (webView) in
-            if let popupWebview = self?.webViews.first(where: { (object) -> Bool in
-                return object.id == webView.parentId
-            }), let index = self?.webViews.firstIndex(of: popupWebview) {
-                self?.webViews.insert(webView, at: index+1)
-                self?.openPopup?(index+1, webView)
-            }
+        webView.openPopup = { [weak self] (url, childWebView) in
+            self?.webViews.append(childWebView)
+            self?.openPopup?(url, webView)
         }
         
         webView.closePopup = { [weak self] (webView) in
             if let index = self?.webViews.firstIndex(of: webView) {
                 self?.webViews.remove(at: index)
-                self?.closePopup?(index+1, webView)
+                self?.closePopup?(webView)
             }
         }
         
-        webView.longPressEvent = { [weak self] (jsonString) in
-            if let jsonData = (jsonString?.data(using: .utf8)) {
+        webView.longPressEvent = { [weak self] (point, jsonString) in
+            if let jsonData = (jsonString?.data(using: .utf8 )) {
                 if let jsonObject = try? JSONSerialization.jsonObject(with: jsonData,
                                                                       options : .allowFragments) as? Dictionary<String, String> {
-                    self?.longPressEvent?(jsonObject)
+                    self?.longPressEvent?(point, jsonObject)
                 }
             }
         }
